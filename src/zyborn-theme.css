@@ -1,0 +1,652 @@
+/* ==========================================================================
+   ZYBORN AUCTION - BRAND THEME v1.0
+   Based on ZYBORN Brand Kit v1.0 (LOCKED)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CSS CUSTOM PROPERTIES (Design Tokens)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Core Colors */
+  --color-black: #000000;
+  --color-white: #FFFFFF;
+  --color-orange: #F6931B;          /* Bitcoin Orange - Primary CTA */
+  
+  /* Steel Grays */
+  --color-steel-100: #F2F2F2;
+  --color-steel-300: #BDBDBD;
+  --color-steel-600: #6F6F6F;
+  --color-steel-900: #2A2A2A;
+  
+  /* Typography */
+  --font-primary: 'Space Grotesk', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  
+  /* Spacing */
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  
+  /* Bootstrap Overrides */
+  --bs-body-bg: var(--color-black);
+  --bs-body-color: var(--color-white);
+  --bs-primary: var(--color-orange);
+  --bs-primary-rgb: 246, 147, 27;
+  --bs-secondary: var(--color-steel-600);
+  --bs-secondary-rgb: 111, 111, 111;
+}
+
+/* --------------------------------------------------------------------------
+   2. BASE STYLES
+   -------------------------------------------------------------------------- */
+html, body {
+  font-family: var(--font-primary) !important;
+  background-color: var(--color-black) !important;
+  color: var(--color-white) !important;
+  min-height: 100vh;
+}
+
+/* Override all Bootstrap text colors */
+.text-dark {
+  color: var(--color-white) !important;
+}
+
+.text-muted {
+  color: var(--color-steel-300) !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. TYPOGRAPHY
+   -------------------------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-primary);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.mono, .metadata, .bid-amount, .price {
+  font-family: var(--font-mono);
+}
+
+/* --------------------------------------------------------------------------
+   4. BUTTONS
+   -------------------------------------------------------------------------- */
+.btn-primary {
+  background-color: var(--color-orange) !important;
+  border-color: var(--color-orange) !important;
+  color: var(--color-black) !important;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 12px 24px;
+  border-radius: 2px !important;
+  transition: filter 0.2s ease;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--color-orange) !important;
+  border-color: var(--color-orange) !important;
+  color: var(--color-black) !important;
+  filter: brightness(1.08);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-primary:disabled {
+  background-color: var(--color-steel-600) !important;
+  border-color: var(--color-steel-600) !important;
+  color: var(--color-steel-300) !important;
+  filter: none;
+}
+
+.btn-secondary {
+  background-color: transparent !important;
+  border: 1px solid var(--color-steel-600) !important;
+  color: var(--color-white) !important;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 12px 24px;
+  border-radius: 2px !important;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-steel-900) !important;
+  border-color: var(--color-steel-300) !important;
+  color: var(--color-white) !important;
+}
+
+/* Google Sign-In Button */
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 24px;
+  background-color: var(--color-white) !important;
+  color: var(--color-black) !important;
+  border: 1px solid var(--color-steel-300) !important;
+  border-radius: 2px !important;
+  font-family: var(--font-primary);
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-google:hover {
+  background-color: var(--color-steel-100) !important;
+  border-color: var(--color-steel-600) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-google:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-google svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Bid Increment Buttons */
+.bid-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.btn-bid-increment {
+  flex: 1;
+  min-width: 80px;
+  padding: 12px 8px;
+  background-color: var(--color-steel-900) !important;
+  border: 1px solid var(--color-steel-600) !important;
+  color: var(--color-white) !important;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 2px !important;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-bid-increment:hover:not(:disabled) {
+  background-color: var(--color-orange) !important;
+  border-color: var(--color-orange) !important;
+  color: var(--color-black) !important;
+}
+
+.btn-bid-increment:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btn-bid-increment.selected {
+  background-color: var(--color-orange) !important;
+  border-color: var(--color-orange) !important;
+  color: var(--color-black) !important;
+}
+
+.btn-bid-increment:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* --------------------------------------------------------------------------
+   5. NAVBAR
+   -------------------------------------------------------------------------- */
+.navbar {
+  background-color: var(--color-black) !important;
+  border-bottom: 1px solid var(--color-steel-900);
+  padding: 16px 24px;
+}
+
+.navbar-brand {
+  font-family: var(--font-primary);
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--color-white) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.navbar-brand:hover {
+  color: var(--color-orange) !important;
+}
+
+.nav-link {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--color-steel-300) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--color-white) !important;
+}
+
+.navbar-toggler {
+  border-color: var(--color-steel-600) !important;
+}
+
+.navbar-toggler-icon {
+  filter: invert(1);
+}
+
+/* --------------------------------------------------------------------------
+   6. CARDS (Auction Items)
+   -------------------------------------------------------------------------- */
+.card {
+  background-color: var(--color-steel-900) !important;
+  border: 1px solid var(--color-steel-600) !important;
+  border-radius: 2px !important;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  border-color: var(--color-orange) !important;
+  box-shadow: 0 4px 20px rgba(246, 147, 27, 0.15) !important;
+  transform: translateY(-4px);
+  cursor: pointer;
+}
+
+.card-body {
+  padding: var(--space-6);
+}
+
+.card-title {
+  font-family: var(--font-primary);
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--color-white);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.card-text {
+  font-family: var(--font-primary);
+  font-size: 14px;
+  color: var(--color-steel-300);
+  line-height: 1.5;
+}
+
+/* Price display */
+.card .price,
+.current-bid {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-orange);
+}
+
+/* --------------------------------------------------------------------------
+   7. MODALS
+   -------------------------------------------------------------------------- */
+.modal-content {
+  background-color: var(--color-steel-900) !important;
+  border: 1px solid var(--color-steel-600) !important;
+  border-radius: 2px !important;
+  color: var(--color-white);
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--color-steel-600) !important;
+  padding: var(--space-6);
+}
+
+.modal-title {
+  font-family: var(--font-primary);
+  font-weight: 700;
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.modal-body {
+  padding: var(--space-6);
+}
+
+.modal-footer {
+  border-top: 1px solid var(--color-steel-600) !important;
+  padding: var(--space-6);
+}
+
+.btn-close {
+  filter: invert(1);
+}
+
+/* --------------------------------------------------------------------------
+   8. FORMS
+   -------------------------------------------------------------------------- */
+.form-control {
+  background-color: var(--color-black) !important;
+  border: 1px solid var(--color-steel-600) !important;
+  border-radius: 2px !important;
+  color: var(--color-white) !important;
+  font-family: var(--font-mono);
+  padding: 12px 16px;
+}
+
+.form-control:focus {
+  background-color: var(--color-black) !important;
+  border-color: var(--color-orange) !important;
+  box-shadow: 0 0 0 2px rgba(246, 147, 27, 0.25) !important;
+  color: var(--color-white) !important;
+}
+
+.form-control::placeholder {
+  color: var(--color-steel-600);
+}
+
+.form-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-steel-300);
+  margin-bottom: 8px;
+}
+
+.form-floating > .form-control {
+  padding-top: 1.625rem;
+  padding-bottom: 0.625rem;
+}
+
+.form-floating > label {
+  color: var(--color-steel-300);
+  font-family: var(--font-mono);
+}
+
+.input-group-text {
+  background-color: var(--color-steel-900) !important;
+  border: 1px solid var(--color-steel-600) !important;
+  border-radius: 2px !important;
+  color: var(--color-white) !important;
+  font-family: var(--font-mono);
+}
+
+/* Validation states */
+.form-control.is-valid {
+  border-color: #28a745 !important;
+}
+
+.form-control.is-invalid {
+  border-color: #dc3545 !important;
+}
+
+.invalid-feedback {
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+/* --------------------------------------------------------------------------
+   9. TABLES
+   -------------------------------------------------------------------------- */
+.table {
+  color: var(--color-white);
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+.table > thead {
+  background-color: var(--color-steel-900);
+  border-bottom: 2px solid var(--color-orange);
+}
+
+.table > thead th {
+  font-family: var(--font-primary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 16px;
+  color: var(--color-white);
+}
+
+.table > tbody > tr {
+  border-bottom: 1px solid var(--color-steel-600);
+}
+
+.table > tbody > tr > td {
+  padding: 12px 16px;
+  vertical-align: middle;
+}
+
+.table > tbody > tr:hover {
+  background-color: var(--color-steel-900);
+}
+
+/* --------------------------------------------------------------------------
+   10. FOOTER
+   -------------------------------------------------------------------------- */
+footer, .footer {
+  background-color: var(--color-black) !important;
+  border-top: 1px solid var(--color-steel-900);
+  padding: var(--space-8) var(--space-6);
+  margin-top: var(--space-16);
+}
+
+footer a {
+  color: var(--color-steel-300);
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: var(--color-orange);
+}
+
+/* --------------------------------------------------------------------------
+   11. UTILITY CLASSES
+   -------------------------------------------------------------------------- */
+.bg-zyborn-black {
+  background-color: var(--color-black) !important;
+}
+
+.bg-zyborn-steel {
+  background-color: var(--color-steel-900) !important;
+}
+
+.text-orange {
+  color: var(--color-orange) !important;
+}
+
+.border-orange {
+  border-color: var(--color-orange) !important;
+}
+
+.font-mono {
+  font-family: var(--font-mono) !important;
+}
+
+/* Dividers */
+.divider {
+  height: 1px;
+  background-color: var(--color-steel-600);
+  margin: var(--space-8) 0;
+}
+
+/* Status badges */
+.badge-live {
+  background-color: #28a745;
+  color: white;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 4px 8px;
+  border-radius: 2px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.badge-ended {
+  background-color: var(--color-steel-600);
+  color: white;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   12. AUCTION-SPECIFIC STYLES
+   -------------------------------------------------------------------------- */
+
+/* Current bid display */
+.current-bid-container {
+  background-color: var(--color-black);
+  border: 1px solid var(--color-orange);
+  border-radius: 2px;
+  padding: var(--space-4);
+  text-align: center;
+}
+
+.current-bid-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--color-steel-300);
+  margin-bottom: 4px;
+}
+
+.current-bid-amount {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-orange);
+}
+
+/* Bid confirmation */
+.bid-confirmation {
+  background-color: rgba(40, 167, 69, 0.1);
+  border: 1px solid #28a745;
+  border-radius: 2px;
+  padding: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.bid-confirmation-text {
+  font-family: var(--font-mono);
+  color: #28a745;
+}
+
+/* Not approved warning */
+.approval-warning {
+  background-color: rgba(246, 147, 27, 0.1);
+  border: 1px solid var(--color-orange);
+  border-radius: 2px;
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.approval-warning-text {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--color-orange);
+}
+
+/* --------------------------------------------------------------------------
+   13. RESPONSIVE ADJUSTMENTS
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 12px 16px;
+  }
+  
+  .navbar-brand {
+    font-size: 20px;
+  }
+  
+  .bid-buttons {
+    flex-direction: column;
+  }
+  
+  .btn-bid-increment {
+    width: 100%;
+  }
+  
+  .current-bid-amount {
+    font-size: 24px;
+  }
+  
+  .modal-dialog {
+    margin: 16px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   14. BOOTSTRAP DARK MODE OVERRIDES
+   -------------------------------------------------------------------------- */
+.dropdown-menu {
+  background-color: var(--color-steel-900);
+  border: 1px solid var(--color-steel-600);
+}
+
+.dropdown-item {
+  color: var(--color-white);
+}
+
+.dropdown-item:hover {
+  background-color: var(--color-steel-600);
+  color: var(--color-white);
+}
+
+.alert {
+  border-radius: 2px;
+  font-family: var(--font-mono);
+}
+
+.alert-info {
+  background-color: rgba(246, 147, 27, 0.1);
+  border-color: var(--color-orange);
+  color: var(--color-orange);
+}
+
+.alert-danger {
+  background-color: rgba(220, 53, 69, 0.1);
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+.alert-success {
+  background-color: rgba(40, 167, 69, 0.1);
+  border-color: #28a745;
+  color: #28a745;
+}
+
+.alert-warning {
+  background-color: rgba(246, 147, 27, 0.1);
+  border-color: var(--color-orange);
+  color: var(--color-orange);
+}
+
+/* Container max-width */
+.container {
+  max-width: 1200px;
+}
+
+/* Row background for alternating */
+.row:nth-child(even) {
+  background-color: rgba(42, 42, 42, 0.3);
+}
