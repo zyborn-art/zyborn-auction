@@ -16,6 +16,7 @@ import Navbar from "./components/Navbar";
 import { SignUpModal } from "./components/Modal";
 import HomePage from "./pages/Home";
 import AdminPage from "./pages/Admin";
+import BidderVerification from "./pages/verification/BidderVerification";
 import Footer from "./components/Footer";
 
 function App() {
@@ -50,6 +51,11 @@ function App() {
                 <AdminPage />
               </ProtectedRoute>
             }
+          />
+          {/* Bidder Verification Page - Public Route */}
+          <Route 
+            path={import.meta.env.BASE_URL + "bidder-verification"} 
+            element={<BidderVerification />} 
           />
         </Routes>
       </Router>

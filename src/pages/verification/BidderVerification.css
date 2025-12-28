@@ -1,0 +1,323 @@
+/* =============================================================================
+   ZYBORN BIDDER VERIFICATION - STYLES
+   Matches ZYBORN Brand Kit v1.0
+   ============================================================================= */
+
+.verification-container {
+  min-height: 100vh;
+  background: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  padding-top: 100px; /* Account for fixed navbar */
+}
+
+.verification-card {
+  background: #2A2A2A;
+  border: 1px solid #6F6F6F;
+  border-radius: 2px;
+  max-width: 520px;
+  width: 100%;
+}
+
+/* Header */
+.verification-header {
+  padding: 32px 32px 24px;
+  border-bottom: 1px solid #6F6F6F;
+}
+
+.verification-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: #F6931B;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.verification-header h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+.verification-header .subtitle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  color: #BDBDBD;
+  margin: 0;
+}
+
+/* Body */
+.verification-body {
+  padding: 32px;
+}
+
+/* Info Box */
+.info-box {
+  background: rgba(246, 147, 27, 0.1);
+  border: 1px solid #F6931B;
+  border-radius: 2px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.info-box h4 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #F6931B;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+}
+
+.info-box p {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  color: #BDBDBD;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Form */
+.verification-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: #FFFFFF;
+  text-transform: uppercase;
+}
+
+.form-group input {
+  background: #1f2020;
+  border: 1px solid #6F6F6F;
+  border-radius: 2px;
+  padding: 14px 16px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  color: #FFFFFF;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #F6931B;
+}
+
+.form-group input::placeholder {
+  color: #6F6F6F;
+}
+
+/* Buttons */
+.btn-primary-full {
+  width: 100%;
+  background: #F6931B;
+  color: #000000;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 16px 24px;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+  margin-top: 8px;
+}
+
+.btn-primary-full:hover {
+  filter: brightness(1.08);
+}
+
+.btn-primary-full:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-secondary-full {
+  width: 100%;
+  background: transparent;
+  color: #FFFFFF;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 14px 24px;
+  border: 1px solid #6F6F6F;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+  margin-top: 16px;
+}
+
+.btn-secondary-full:hover {
+  border-color: #BDBDBD;
+}
+
+/* Error Message */
+.error-message {
+  background: rgba(220, 53, 69, 0.15);
+  border: 1px solid #dc3545;
+  border-radius: 2px;
+  padding: 12px 16px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  color: #ff6b7a;
+}
+
+/* Success State */
+.success-icon {
+  font-size: 64px;
+  text-align: center;
+  color: #28a745;
+  margin-bottom: 16px;
+}
+
+.success-text {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+  color: #FFFFFF;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+/* Pending State */
+.pending-icon {
+  font-size: 64px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.info-text {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  color: #BDBDBD;
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+/* Step 2 Section */
+.step-two-section {
+  background: #1f2020;
+  border: 1px solid #6F6F6F;
+  border-radius: 2px;
+  padding: 24px;
+  margin: 24px 0;
+  text-align: center;
+}
+
+.step-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: #F6931B;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.step-two-section h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #FFFFFF;
+  margin: 0 0 12px 0;
+}
+
+.step-two-section p {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  color: #BDBDBD;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* Book Call Section */
+.book-call-section {
+  background: rgba(246, 147, 27, 0.1);
+  border: 1px solid #F6931B;
+  border-radius: 2px;
+  padding: 24px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.book-call-section h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #F6931B;
+  margin: 0 0 8px 0;
+}
+
+.book-call-section p {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  color: #BDBDBD;
+  margin-bottom: 16px;
+}
+
+/* Fine Print */
+.fine-print {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: #6F6F6F;
+  text-align: center;
+  margin-top: 16px;
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  background: #6F6F6F;
+  margin: 24px 0;
+}
+
+/* Loading */
+.loading-spinner {
+  text-align: center;
+  padding: 60px 20px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  color: #BDBDBD;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .verification-container {
+    padding: 20px 16px;
+    padding-top: 80px;
+  }
+  
+  .verification-header {
+    padding: 24px 20px 20px;
+  }
+  
+  .verification-header h1 {
+    font-size: 24px;
+  }
+  
+  .verification-body {
+    padding: 24px 20px;
+  }
+}

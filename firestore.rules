@@ -1,0 +1,58 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Validate an incoming bid
+    function isValidBid() {
+      let editedKeys = request.resource.data.diff(resource.data);
+      let changedKeys = editedKeys.changedKeys();
+      let removedKeys = editedKeys.removedKeys();
+      let numModifiedKeys = changedKeys.union(removedKeys).size();
+      let addedKeys = editedKeys.addedKeys();
+      let numAddedKeys = addedKeys.size();
+      return numModifiedKeys == 0 && numAddedKeys == 1;
+    }
+    
+    // Check user has signed in and registered
+    function isLoggedIn() {
+      return request.auth != null && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+    }
+    
+    // Check if user is admin (REPLACE WITH YOUR ACTUAL ADMIN PASSWORD)
+    function isAdmin() {
+      return isLoggedIn() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == "YOUR_ADMIN_PASSWORD_HERE"
+    }
+    
+    // Check if user is approved to bid
+    function isApprovedBidder() {
+      return isLoggedIn() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.approvedToBid == true
+    }
+    
+    // USER DOCUMENTS
+    match /users/{userId} {
+      allow read: if isAdmin() || (request.auth != null && request.auth.uid == userId);
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow update: if isAdmin() || (request.auth != null && request.auth.uid == userId);
+      allow delete: if isAdmin();
+    }
+    
+    // AUCTION ITEMS
+    match /auction/items {
+      allow get, list: if true;
+      allow update: if isAdmin() || (isApprovedBidder() && isValidBid());
+      allow create, delete: if isAdmin();
+    }
+    
+    // VERIFICATION REQUESTS
+    match /verificationRequests/{requestId} {
+      // Users can read their own verification request
+      allow read: if isAdmin() || (request.auth != null && request.auth.uid == requestId);
+      // Users can create their own verification request (requestId must match their uid)
+      allow create: if request.auth != null && request.auth.uid == requestId;
+      // Only admins can update (approve/reject)
+      allow update: if isAdmin();
+      // Only admins can delete
+      allow delete: if isAdmin();
+    }
+  }
+}

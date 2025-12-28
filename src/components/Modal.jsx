@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
+import { useNavigate } from "react-router-dom";
 import { itemStatus } from "../utils/itemStatus";
 import { formatField, formatMoney } from "../utils/formatString";
 import { 
@@ -232,7 +233,7 @@ const ItemModal = () => {
               ⚠️ Your registration is pending approval.
               <br />
               <a 
-                href="https://zyborn.com/bidder-verification" 
+                href="/bidder-verification" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 style={{ color: '#F6931B', textDecoration: 'underline' }}
@@ -418,7 +419,7 @@ const SignUpModal = () => {
               <p style={{ fontSize: '14px', color: '#BDBDBD', marginBottom: '0' }}>
                 After registration, complete the{' '}
                 <a 
-                  href="https://zyborn.com/bidder-verification" 
+                  href="/bidder-verification" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   style={{ color: '#F6931B' }}
