@@ -1,26 +1,20 @@
 import React from "react";
-import { FaGithub } from "react-icons/fa";
 
 const Footer = () => {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="container d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-      <div className="col-md-4 d-flex align-items-center">
-        <span className="text-muted">© {year} Harry Mellor</span>
+    <footer className="zyborn-footer">
+      <div className="container d-flex flex-wrap justify-content-between align-items-center py-3">
+        <div className="d-flex align-items-center">
+          <span className="text-muted">© {year} ZYBORN ART. All rights reserved.</span>
+        </div>
+        <div className="d-flex align-items-center gap-3">
+          <a href="https://zyborn.com" className="footer-link">zyborn.com</a>
+          <span className="text-muted">•</span>
+          <a href="https://zyborn.com/press" className="footer-link">Press</a>
+        </div>
       </div>
-      <ul className="nav col-md-4 justify-content-end list-unstyled d-flex">
-        <li className="ms-3">
-          <a
-            className="bi bi-github text-muted"
-            href="https://github.com/HMellor/"
-            width="24"
-            height="24"
-          >
-            <FaGithub />
-          </a>
-        </li>
-      </ul>
     </footer>
   );
 };

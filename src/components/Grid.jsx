@@ -6,7 +6,7 @@ const Grid = () => {
   const { items } = useContext(ItemsContext);
 
   return (
-    <div className="row row-cols-1 row-cols-md-3 g-4">
+    <div className="auction-grid">
       {items.map((item) => {
         return <Item key={item.id} item={item} />;
       })}

@@ -4,10 +4,12 @@ import { ItemModal } from "../components/Modal";
 
 function HomePage() {
   return (
-    <div className="container mt-3">
-      <Grid />
-      <ItemModal />
-    </div>
+    <main className="auction-main">
+      <div className="container">
+        <Grid />
+        <ItemModal />
+      </div>
+    </main>
   );
 }
 

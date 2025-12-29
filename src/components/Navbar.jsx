@@ -10,7 +10,7 @@ const Navbar = ({ admin }) => {
   const openModal = useContext(ModalsContext).openModal;
   const navigate = useNavigate();
   const [user, setUser] = useState("");
-  const [authButtonText, setAuthButtonText] = useState("Sign up");
+  const [authButtonText, setAuthButtonText] = useState("Sign up / Login");
   const [adminButtonText, setAdminButtonText] = useState("Admin");
   const location = useLocation();
 
@@ -39,14 +39,14 @@ const Navbar = ({ admin }) => {
   const handleAuth = () => {
     if (user) {
       setUser("");
-      setAuthButtonText("Sign up");
+      setAuthButtonText("Sign up / Login");
     } else {
       openModal(ModalTypes.SIGN_UP);
     }
   };
 
   return (
-    <nav className="navbar navbar-dark bg-primary">
+    <nav className="navbar navbar-dark bg-dark">
       <div className="container-fluid">
         <div className="navbar-brand mb-0 h1 me-auto">
           <img
@@ -56,7 +56,7 @@ const Navbar = ({ admin }) => {
             height="24"
             className="d-inline-block align-text-top"
           />
-          The Markatplace
+          Auction
         </div>
         <div className="row row-cols-auto">
           <div className="navbar-brand">{user}</div>
