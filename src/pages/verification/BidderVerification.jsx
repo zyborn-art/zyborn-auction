@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase/config";
 import { onAuthStateChanged } from "firebase/auth";
 import "./BidderVerification.css";
@@ -429,6 +429,29 @@ const BidderVerification = () => {
     window.open(CALENDAR_BOOKING_URL, "_blank");
   };
 
+  // Handle "I've Booked My Call" button click
+  const handleConfirmBooked = async () => {
+    if (!user) return;
+    
+    try {
+      // Update verification request to mark call as booked
+      await updateDoc(doc(db, "verificationRequests", user.uid), {
+        callBooked: true,
+        callBookedAt: new Date().toISOString()
+      });
+      
+      // Refresh the existing request to show pending state
+      const verificationDoc = await getDoc(doc(db, "verificationRequests", user.uid));
+      if (verificationDoc.exists()) {
+        setExistingRequest(verificationDoc.data());
+      }
+      setSubmitted(false); // Switch to pending view
+      
+    } catch (err) {
+      console.error("Error confirming call booked:", err);
+    }
+  };
+
   // Check if form is valid for submission
   const isFormValid = () => {
     return (
@@ -564,12 +587,23 @@ const BidderVerification = () => {
               <p className="fine-print">
                 You'll be redirected to Google Calendar to select a time slot.
               </p>
+              
+              <div className="or-divider">
+                <span>Already booked?</span>
+              </div>
+              
+              <button 
+                className="btn-secondary-full"
+                onClick={handleConfirmBooked}
+              >
+                ✓ I'VE BOOKED MY CALL
+              </button>
             </div>
             
             <div className="divider"></div>
             
             <button 
-              className="btn-secondary-full"
+              className="btn-tertiary"
               onClick={() => navigate("/")}
             >
               ← BACK TO AUCTION

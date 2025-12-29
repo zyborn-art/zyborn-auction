@@ -538,6 +538,51 @@
   margin: 24px 0;
 }
 
+/* Or Divider with text */
+.or-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.or-divider::before,
+.or-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #6F6F6F;
+}
+
+.or-divider span {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: #6F6F6F;
+  padding: 0 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Tertiary Button (text-only, less prominent) */
+.btn-tertiary {
+  width: 100%;
+  background: transparent;
+  color: #6F6F6F;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  margin-top: 8px;
+}
+
+.btn-tertiary:hover {
+  color: #BDBDBD;
+}
+
 /* Loading */
 .loading-spinner {
   text-align: center;
