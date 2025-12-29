@@ -292,8 +292,19 @@ h1, h2, h3, h4, h5, h6 {
 .card-text {
   font-family: var(--font-primary);
   font-size: 14px;
-  color: var(--color-steel-300);
+  color: var(--color-white);
   line-height: 1.5;
+}
+
+/* Card subtitle (WORLD's FIRST CANNED BTC) */
+.card .subtitle,
+.card-body .text-muted,
+.card-body small,
+.card-subtitle,
+.card-body .text-body-secondary,
+.text-body-secondary {
+  color: var(--color-white) !important;
+  opacity: 0.9;
 }
 
 /* Price display */
@@ -330,6 +341,26 @@ h1, h2, h3, h4, h5, h6 {
 
 .modal-body {
   padding: var(--space-6);
+}
+
+/* Modal title - white text */
+.modal-title {
+  color: var(--color-white) !important;
+  font-family: var(--font-primary);
+  font-weight: 700;
+  font-size: 24px;
+  text-transform: uppercase;
+}
+
+/* Modal description/detail text - white */
+.modal-body p,
+.modal-body .detail,
+.modal-body .description,
+.modal-body > p:first-child {
+  color: var(--color-white) !important;
+  line-height: 1.7;
+  font-size: 15px;
+  opacity: 0.95;
 }
 
 .modal-footer {
