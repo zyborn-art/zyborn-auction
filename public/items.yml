@@ -1,24 +1,28 @@
 - id: 1
-  primaryImage: canned_btc
+  primaryImage: auction_btc
   title: "Survival Rations"
   subtitle: "WORLD's FIRST CANNED BTC"
   detail: |
     Bitcoin as Survival Rations: One Million Dollars Sealed in a Can.
     
+
     In an era defined by military conflict, financial uncertainty, and rapid digital transformation, ZYBORN seals one million dollars' worth of Bitcoin into tin cans and releases them as artworks at auction.
     
+
     The project poses a fundamental question: as money becomes increasingly abstract, what can truly be considered a survival resource today?
     
+
     Medium: Metal
-    Dimensions: 10.8 × 7.50 cm
+    Dimensions: 10.8 × 7.5 cm
     Edition: 1/21 (unique original work)
+
     
     Included with purchase:
     - Signed Artwork
     - Certificate of Authenticity
     - Embedded NFC tag
     - BTC Cold wallet (Ledger)
-  secondaryImage: canned_btc
+  secondaryImage: auction_btc
   currency: "$"
   amount: 1000000
   endTime: "2026-01-03T16:00:00.000Z"
