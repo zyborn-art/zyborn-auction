@@ -126,7 +126,250 @@
   color: #6F6F6F;
 }
 
-/* Buttons */
+/* =============================================================================
+   TERMS CHECKBOX STYLES
+   ============================================================================= */
+
+.terms-checkbox-group {
+  margin-top: 8px;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  padding-left: 32px;
+  cursor: pointer;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  color: #BDBDBD;
+  line-height: 1.5;
+  user-select: none;
+}
+
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #1f2020;
+  border: 2px solid #6F6F6F;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+  border-color: #F6931B;
+}
+
+.checkbox-container input:checked ~ .checkmark {
+  background-color: #F6931B;
+  border-color: #F6931B;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.checkbox-container .checkmark:after {
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid #000000;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox-label {
+  color: #BDBDBD;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  color: #F6931B;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.link-button:hover {
+  color: #FFB84D;
+}
+
+/* =============================================================================
+   LEGAL MODAL STYLES
+   ============================================================================= */
+
+.legal-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.legal-modal {
+  background: #2A2A2A;
+  border: 1px solid #6F6F6F;
+  border-radius: 2px;
+  max-width: 700px;
+  width: 100%;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.legal-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 28px;
+  border-bottom: 1px solid #6F6F6F;
+  flex-shrink: 0;
+}
+
+.legal-modal-header h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+.modal-close-btn {
+  background: transparent;
+  border: 1px solid #6F6F6F;
+  color: #BDBDBD;
+  width: 40px;
+  height: 40px;
+  border-radius: 2px;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+  border-color: #F6931B;
+  color: #F6931B;
+}
+
+.legal-modal-content {
+  padding: 28px;
+  overflow-y: auto;
+  flex-grow: 1;
+  color: #BDBDBD;
+  line-height: 1.7;
+}
+
+/* Modal Content Typography */
+.modal-h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0 0 16px 0;
+  text-transform: uppercase;
+}
+
+.modal-h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #F6931B;
+  margin: 32px 0 12px 0;
+  text-transform: uppercase;
+}
+
+.modal-p {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  color: #BDBDBD;
+  margin: 0 0 8px 0;
+  line-height: 1.7;
+}
+
+.modal-li {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  color: #BDBDBD;
+  margin: 4px 0;
+  margin-left: 20px;
+  line-height: 1.6;
+}
+
+.modal-hr {
+  border: none;
+  border-top: 1px solid #6F6F6F;
+  margin: 24px 0;
+}
+
+.legal-modal-footer {
+  padding: 20px 28px;
+  border-top: 1px solid #6F6F6F;
+  flex-shrink: 0;
+}
+
+.legal-modal-footer .btn-primary-full {
+  margin-top: 0;
+}
+
+/* =============================================================================
+   BUTTONS
+   ============================================================================= */
+
 .btn-primary-full {
   width: 100%;
   background: #F6931B;
@@ -144,13 +387,15 @@
   margin-top: 8px;
 }
 
-.btn-primary-full:hover {
+.btn-primary-full:hover:not(:disabled) {
   filter: brightness(1.08);
 }
 
-.btn-primary-full:disabled {
-  opacity: 0.6;
+.btn-primary-full:disabled,
+.btn-primary-full.btn-disabled {
+  opacity: 0.4;
   cursor: not-allowed;
+  filter: none;
 }
 
 .btn-secondary-full {
@@ -302,7 +547,10 @@
   color: #BDBDBD;
 }
 
-/* Responsive */
+/* =============================================================================
+   RESPONSIVE STYLES
+   ============================================================================= */
+
 @media (max-width: 600px) {
   .verification-container {
     padding: 20px 16px;
@@ -319,5 +567,43 @@
   
   .verification-body {
     padding: 24px 20px;
+  }
+  
+  /* Modal responsive */
+  .legal-modal {
+    max-height: 90vh;
+  }
+  
+  .legal-modal-header {
+    padding: 20px;
+  }
+  
+  .legal-modal-header h2 {
+    font-size: 20px;
+  }
+  
+  .legal-modal-content {
+    padding: 20px;
+  }
+  
+  .legal-modal-footer {
+    padding: 16px 20px;
+  }
+  
+  .modal-h1 {
+    font-size: 22px;
+  }
+  
+  .modal-h2 {
+    font-size: 16px;
+  }
+  
+  /* Checkbox responsive */
+  .checkbox-container {
+    font-size: 13px;
+  }
+  
+  .link-button {
+    font-size: 13px;
   }
 }
