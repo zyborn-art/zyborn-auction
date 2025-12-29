@@ -650,3 +650,97 @@ footer a:hover {
 .row:nth-child(even) {
   background-color: rgba(42, 42, 42, 0.3);
 }
+
+/* --------------------------------------------------------------------------
+   15. AUTH TABS (Email/Google Toggle)
+   -------------------------------------------------------------------------- */
+.auth-tabs {
+  display: flex;
+  gap: 0;
+  background-color: var(--color-black);
+  border: 1px solid var(--color-steel-600);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.auth-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 16px;
+  background-color: transparent;
+  border: none;
+  color: var(--color-steel-300);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.auth-tab:hover {
+  color: var(--color-white);
+  background-color: var(--color-steel-900);
+}
+
+.auth-tab.active {
+  color: var(--color-black);
+  background-color: var(--color-orange);
+}
+
+.auth-tab svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Auth Mode Toggle (Sign In / Sign Up) */
+.auth-mode-toggle {
+  display: flex;
+  gap: 0;
+  background-color: var(--color-black);
+  border: 1px solid var(--color-steel-600);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.auth-mode-btn {
+  flex: 1;
+  padding: 10px 16px;
+  background-color: transparent;
+  border: none;
+  color: var(--color-steel-300);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.auth-mode-btn:hover {
+  color: var(--color-white);
+  background-color: var(--color-steel-900);
+}
+
+.auth-mode-btn.active {
+  color: var(--color-white);
+  background-color: var(--color-steel-600);
+}
+
+/* Button Link Style */
+.btn-link {
+  background: none !important;
+  border: none !important;
+  padding: 8px !important;
+  text-decoration: underline !important;
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.btn-link:hover {
+  color: var(--color-orange) !important;
+}

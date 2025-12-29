@@ -7,6 +7,10 @@ import { formatField, formatMoney } from "../utils/formatString";
 import { 
   GoogleAuthProvider, 
   signInWithPopup,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendEmailVerification,
+  sendPasswordResetEmail,
   updateProfile 
 } from "firebase/auth";
 import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
@@ -17,7 +21,6 @@ import { ModalTypes } from "../utils/modalTypes";
 // =============================================================================
 // BID INCREMENT CONFIGURATION
 // =============================================================================
-// For a $1M starting price auction, these are professional increments
 const BID_INCREMENTS = [
   { label: '+$1,000', value: 1000 },
   { label: '+$5,000', value: 5000 },
@@ -27,7 +30,7 @@ const BID_INCREMENTS = [
 ];
 
 // =============================================================================
-// GOOGLE ICON SVG COMPONENT
+// ICON COMPONENTS
 // =============================================================================
 const GoogleIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24">
@@ -35,6 +38,12 @@ const GoogleIcon = () => (
     <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
     <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
     <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+  </svg>
+);
+
+const EmailIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
   </svg>
 );
 
@@ -76,7 +85,7 @@ Modal.propTypes = {
 };
 
 // =============================================================================
-// ITEM MODAL (Bidding Interface) - WITH FIXED INCREMENTS
+// ITEM MODAL (Bidding Interface)
 // =============================================================================
 const ItemModal = () => {
   const { activeItem, openModal, closeModal } = useContext(ModalsContext);
@@ -88,7 +97,6 @@ const ItemModal = () => {
   const [isApproved, setIsApproved] = useState(false);
   const [isCheckingApproval, setIsCheckingApproval] = useState(true);
 
-  // Load secondary image
   useEffect(() => {
     if (activeItem.secondaryImage === undefined) return;
     import(`../assets/${activeItem.secondaryImage}.png`).then((src) => {
@@ -96,13 +104,11 @@ const ItemModal = () => {
     });
   }, [activeItem.secondaryImage]);
 
-  // Calculate current bid
   useEffect(() => {
     const status = itemStatus(activeItem);
     setCurrentBid(status.amount);
   }, [activeItem]);
 
-  // Check if user is approved to bid
   useEffect(() => {
     const checkApproval = async () => {
       setIsCheckingApproval(true);
@@ -135,7 +141,6 @@ const ItemModal = () => {
   };
 
   const handleSubmitBid = async () => {
-    // Validation checks
     if (!auth.currentUser) {
       setFeedback({ message: "Please sign in first", type: "error" });
       setTimeout(() => openModal(ModalTypes.SIGN_UP), 1000);
@@ -163,7 +168,6 @@ const ItemModal = () => {
 
     const nowTime = new Date().getTime();
     
-    // Check if auction ended
     if (activeItem.endTime - nowTime < 0) {
       setFeedback({ message: "This auction has ended", type: "error" });
       delayedClose();
@@ -205,10 +209,8 @@ const ItemModal = () => {
   return (
     <Modal type={ModalTypes.ITEM} title={activeItem.title}>
       <div className="modal-body">
-        {/* Item Description */}
         <p className="mb-3">{activeItem.detail}</p>
         
-        {/* Item Image */}
         {secondaryImageSrc && (
           <img 
             src={secondaryImageSrc} 
@@ -218,7 +220,6 @@ const ItemModal = () => {
           />
         )}
 
-        {/* Current Bid Display */}
         <div className="current-bid-container mb-4">
           <div className="current-bid-label">CURRENT BID</div>
           <div className="current-bid-amount">
@@ -226,7 +227,6 @@ const ItemModal = () => {
           </div>
         </div>
 
-        {/* Approval Status Warning */}
         {!isCheckingApproval && !isApproved && auth.currentUser && (
           <div className="approval-warning mb-4">
             <div className="approval-warning-text">
@@ -244,7 +244,6 @@ const ItemModal = () => {
           </div>
         )}
 
-        {/* Bid Increment Buttons */}
         <div className="mb-3">
           <label className="form-label">SELECT BID INCREMENT</label>
           <div className="bid-buttons">
@@ -261,7 +260,6 @@ const ItemModal = () => {
           </div>
         </div>
 
-        {/* Preview New Bid Amount */}
         {selectedIncrement && (
           <div className="text-center mb-3">
             <span className="font-mono" style={{ color: '#BDBDBD' }}>
@@ -270,7 +268,6 @@ const ItemModal = () => {
           </div>
         )}
 
-        {/* Feedback Message */}
         {feedback.message && (
           <div className={`alert alert-${feedback.type === 'success' ? 'success' : feedback.type === 'warning' ? 'warning' : 'danger'} mb-3`}>
             {feedback.message}
@@ -300,14 +297,35 @@ const ItemModal = () => {
 };
 
 // =============================================================================
-// SIGN UP MODAL - WITH GOOGLE SIGN-IN
+// SIGN UP MODAL - WITH GOOGLE + EMAIL/PASSWORD + TABS
 // =============================================================================
 const SignUpModal = () => {
-  const { closeModal } = useContext(ModalsContext);
+  const { closeModal, openModal } = useContext(ModalsContext);
+  
+  // UI State
+  const [activeTab, setActiveTab] = useState("google"); // "google" or "email"
+  const [mode, setMode] = useState("signin"); // "signin", "signup", "forgot", "verify"
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
+  const [success, setSuccess] = useState("");
+  
+  // Form State
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
 
+  // Reset form when switching tabs
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    setMode("signin");
+    setError("");
+    setSuccess("");
+    setEmail("");
+    setPassword("");
+    setName("");
+  };
+
+  // ===== GOOGLE SIGN-IN =====
   const handleGoogleSignIn = async () => {
     setLoading(true);
     setError("");
@@ -318,90 +336,379 @@ const SignUpModal = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      // Check if user document exists
       const userDocRef = doc(db, "users", user.uid);
       const userDoc = await getDoc(userDocRef);
 
       if (!userDoc.exists()) {
-        // Create new user document
         await setDoc(userDocRef, {
           name: user.displayName || "Anonymous",
           email: user.email,
           photoURL: user.photoURL || "",
           admin: "",
-          approvedToBid: false,  // Requires manual approval
+          approvedToBid: false,
           createdAt: new Date().toISOString(),
           provider: "google"
         });
-        console.log("New user created:", user.uid);
       }
 
-      setSuccess(true);
-      
-      // Close modal after brief delay
-      setTimeout(() => {
-        closeModal();
-        setSuccess(false);
-      }, 1500);
+      setSuccess("Signed in successfully!");
+      setTimeout(() => closeModal(), 1500);
 
     } catch (error) {
       console.error("Google sign-in error:", error);
-      
-      // User-friendly error messages
       if (error.code === "auth/popup-closed-by-user") {
-        setError("Sign-in cancelled. Please try again.");
+        setError("Sign-in cancelled.");
       } else if (error.code === "auth/popup-blocked") {
-        setError("Popup blocked. Please allow popups for this site.");
+        setError("Popup blocked. Please allow popups.");
       } else {
         setError("Sign-in failed. Please try again.");
       }
     }
-
     setLoading(false);
   };
 
-  return (
-    <Modal type={ModalTypes.SIGN_UP} title="Register to Bid">
-      <div className="modal-body">
-        {success ? (
-          // Success State
-          <div className="text-center py-4">
-            <div style={{ fontSize: '48px', marginBottom: '16px' }}>✓</div>
-            <h4 style={{ color: '#28a745' }}>Registration Successful!</h4>
-            <p className="text-muted">
-              {auth.currentUser?.displayName ? (
-                <>Welcome, {auth.currentUser.displayName}!</>
-              ) : (
-                <>Your account has been created.</>
-              )}
-            </p>
-            <p style={{ fontSize: '14px', color: '#BDBDBD' }}>
-              To place bids, please complete the verification form.
-            </p>
-          </div>
-        ) : (
-          // Sign In State
-          <>
-            <p className="mb-4" style={{ color: '#BDBDBD' }}>
-              Sign in with your Google account to register for the auction.
-              Your bidding will be enabled after identity verification.
-            </p>
+  // ===== EMAIL SIGN UP =====
+  const handleEmailSignUp = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
-            {/* Google Sign-In Button */}
-            <button
-              className="btn-google mb-3"
-              onClick={handleGoogleSignIn}
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+      const user = result.user;
+
+      // Update display name
+      await updateProfile(user, { displayName: name });
+
+      // Create Firestore document
+      await setDoc(doc(db, "users", user.uid), {
+        name: name,
+        email: user.email,
+        photoURL: "",
+        admin: "",
+        approvedToBid: false,
+        emailVerified: false,
+        createdAt: new Date().toISOString(),
+        provider: "email"
+      });
+
+      // Send verification email (uses Firebase's built-in template)
+      await sendEmailVerification(user);
+
+      setMode("verify");
+      setSuccess("Account created! Check your email for verification link.");
+
+    } catch (error) {
+      console.error("Email sign-up error:", error);
+      if (error.code === "auth/email-already-in-use") {
+        setError("Email already registered. Please sign in.");
+      } else if (error.code === "auth/invalid-email") {
+        setError("Invalid email address.");
+      } else if (error.code === "auth/weak-password") {
+        setError("Password is too weak.");
+      } else {
+        setError("Registration failed. Please try again.");
+      }
+    }
+    setLoading(false);
+  };
+
+  // ===== EMAIL SIGN IN =====
+  const handleEmailSignIn = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      const user = result.user;
+
+      // Check if user doc exists, create if not (for admin account)
+      const userDocRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userDocRef);
+
+      if (!userDoc.exists()) {
+        await setDoc(userDocRef, {
+          name: user.displayName || user.email.split("@")[0],
+          email: user.email,
+          photoURL: "",
+          admin: "",
+          approvedToBid: false,
+          emailVerified: user.emailVerified,
+          createdAt: new Date().toISOString(),
+          provider: "email"
+        });
+      }
+
+      setSuccess("Signed in successfully!");
+      setTimeout(() => closeModal(), 1500);
+
+    } catch (error) {
+      console.error("Email sign-in error:", error);
+      if (error.code === "auth/user-not-found") {
+        setError("No account found. Please sign up.");
+      } else if (error.code === "auth/wrong-password") {
+        setError("Incorrect password.");
+      } else if (error.code === "auth/invalid-email") {
+        setError("Invalid email address.");
+      } else if (error.code === "auth/invalid-credential") {
+        setError("Invalid email or password.");
+      } else {
+        setError("Sign-in failed. Please try again.");
+      }
+    }
+    setLoading(false);
+  };
+
+  // ===== PASSWORD RESET =====
+  const handlePasswordReset = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setSuccess("Password reset email sent! Check your inbox.");
+    } catch (error) {
+      console.error("Password reset error:", error);
+      if (error.code === "auth/user-not-found") {
+        setError("No account found with this email.");
+      } else if (error.code === "auth/invalid-email") {
+        setError("Invalid email address.");
+      } else {
+        setError("Failed to send reset email. Please try again.");
+      }
+    }
+    setLoading(false);
+  };
+
+  // ===== RENDER =====
+  return (
+    <Modal type={ModalTypes.SIGN_UP} title={mode === "forgot" ? "Reset Password" : "Sign In / Register"}>
+      <div className="modal-body">
+        
+        {/* Success Message */}
+        {success && (
+          <div className="alert alert-success mb-3">
+            ✓ {success}
+          </div>
+        )}
+
+        {/* Verification Sent Screen */}
+        {mode === "verify" && (
+          <div className="text-center py-4">
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>📧</div>
+            <h4>Check Your Email</h4>
+            <p style={{ color: '#BDBDBD' }}>
+              We've sent a verification link to <strong>{email}</strong>
+            </p>
+            <p style={{ fontSize: '14px', color: '#6F6F6F' }}>
+              Click the link in the email to verify your account, then return here to sign in.
+            </p>
+            <button 
+              className="btn btn-secondary mt-3"
+              onClick={() => { setMode("signin"); setSuccess(""); }}
+            >
+              Back to Sign In
+            </button>
+          </div>
+        )}
+
+        {/* Password Reset Screen */}
+        {mode === "forgot" && !success && (
+          <form onSubmit={handlePasswordReset}>
+            <p style={{ color: '#BDBDBD', marginBottom: '20px' }}>
+              Enter your email and we'll send you a reset link.
+            </p>
+            
+            <div className="mb-3">
+              <input
+                type="email"
+                className="form-control"
+                placeholder="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            {error && <div className="alert alert-danger mb-3">{error}</div>}
+
+            <button 
+              type="submit" 
+              className="btn btn-primary w-100 mb-3"
               disabled={loading}
             >
-              <GoogleIcon />
-              <span>{loading ? "Signing in..." : "Continue with Google"}</span>
+              {loading ? "Sending..." : "Send Reset Link"}
             </button>
 
-            {/* Error Message */}
-            {error && (
-              <div className="alert alert-danger mb-3">
-                {error}
-              </div>
+            <button 
+              type="button"
+              className="btn btn-link w-100"
+              onClick={() => { setMode("signin"); setError(""); setSuccess(""); }}
+              style={{ color: '#BDBDBD' }}
+            >
+              ← Back to Sign In
+            </button>
+          </form>
+        )}
+
+        {/* Main Sign In / Sign Up Screen */}
+        {mode !== "verify" && mode !== "forgot" && !success && (
+          <>
+            {/* Tab Buttons */}
+            <div className="auth-tabs mb-4">
+              <button
+                className={`auth-tab ${activeTab === "google" ? "active" : ""}`}
+                onClick={() => handleTabChange("google")}
+              >
+                <GoogleIcon /> Google
+              </button>
+              <button
+                className={`auth-tab ${activeTab === "email" ? "active" : ""}`}
+                onClick={() => handleTabChange("email")}
+              >
+                <EmailIcon /> Email
+              </button>
+            </div>
+
+            {/* Google Tab Content */}
+            {activeTab === "google" && (
+              <>
+                <p style={{ color: '#BDBDBD', marginBottom: '20px' }}>
+                  Sign in with your Google account. Quick and secure.
+                </p>
+                
+                <button
+                  className="btn-google mb-3"
+                  onClick={handleGoogleSignIn}
+                  disabled={loading}
+                >
+                  <GoogleIcon />
+                  <span>{loading ? "Signing in..." : "Continue with Google"}</span>
+                </button>
+
+                {error && <div className="alert alert-danger mb-3">{error}</div>}
+              </>
+            )}
+
+            {/* Email Tab Content */}
+            {activeTab === "email" && (
+              <>
+                {/* Sign In / Sign Up Toggle */}
+                <div className="auth-mode-toggle mb-3">
+                  <button
+                    className={`auth-mode-btn ${mode === "signin" ? "active" : ""}`}
+                    onClick={() => { setMode("signin"); setError(""); }}
+                  >
+                    Sign In
+                  </button>
+                  <button
+                    className={`auth-mode-btn ${mode === "signup" ? "active" : ""}`}
+                    onClick={() => { setMode("signup"); setError(""); }}
+                  >
+                    Create Account
+                  </button>
+                </div>
+
+                {/* Sign Up Form */}
+                {mode === "signup" && (
+                  <form onSubmit={handleEmailSignUp}>
+                    <div className="mb-3">
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Full name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <input
+                        type="email"
+                        className="form-control"
+                        placeholder="Email address"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <input
+                        type="password"
+                        className="form-control"
+                        placeholder="Password (min 8 characters)"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        minLength={8}
+                        required
+                      />
+                    </div>
+
+                    {error && <div className="alert alert-danger mb-3">{error}</div>}
+
+                    <button 
+                      type="submit" 
+                      className="btn btn-primary w-100"
+                      disabled={loading}
+                    >
+                      {loading ? "Creating account..." : "Create Account"}
+                    </button>
+                  </form>
+                )}
+
+                {/* Sign In Form */}
+                {mode === "signin" && (
+                  <form onSubmit={handleEmailSignIn}>
+                    <div className="mb-3">
+                      <input
+                        type="email"
+                        className="form-control"
+                        placeholder="Email address"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <input
+                        type="password"
+                        className="form-control"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                      />
+                    </div>
+
+                    {error && <div className="alert alert-danger mb-3">{error}</div>}
+
+                    <button 
+                      type="submit" 
+                      className="btn btn-primary w-100 mb-2"
+                      disabled={loading}
+                    >
+                      {loading ? "Signing in..." : "Sign In"}
+                    </button>
+
+                    <button 
+                      type="button"
+                      className="btn btn-link w-100"
+                      onClick={() => { setMode("forgot"); setError(""); }}
+                      style={{ color: '#F6931B', fontSize: '14px' }}
+                    >
+                      Forgot password?
+                    </button>
+                  </form>
+                )}
+              </>
             )}
 
             {/* Info Box */}
@@ -426,14 +733,14 @@ const SignUpModal = () => {
                 >
                   bidder verification form
                 </a>{' '}
-                to enable bidding. This typically takes 1-2 business hours.
+                to enable bidding.
               </p>
             </div>
           </>
         )}
       </div>
 
-      {!success && (
+      {mode !== "verify" && !success && (
         <div className="modal-footer">
           <button 
             type="button" 
