@@ -380,29 +380,50 @@ const SignUpModal = () => {
     }
 
     try {
+      console.log("Creating user account...");
       const result = await createUserWithEmailAndPassword(auth, email, password);
       const user = result.user;
+      console.log("User created:", user.uid);
 
       // Update display name
-      await updateProfile(user, { displayName: name });
+      try {
+        await updateProfile(user, { displayName: name });
+        console.log("Profile updated with name:", name);
+      } catch (profileError) {
+        console.warn("Profile update failed:", profileError);
+        // Continue anyway - not critical
+      }
 
       // Create Firestore document
-      await setDoc(doc(db, "users", user.uid), {
-        name: name,
-        email: user.email,
-        photoURL: "",
-        admin: "",
-        approvedToBid: false,
-        emailVerified: false,
-        createdAt: new Date().toISOString(),
-        provider: "email"
-      });
+      try {
+        await setDoc(doc(db, "users", user.uid), {
+          name: name,
+          email: user.email,
+          photoURL: "",
+          admin: "",
+          approvedToBid: false,
+          emailVerified: false,
+          createdAt: new Date().toISOString(),
+          provider: "email"
+        });
+        console.log("Firestore document created");
+      } catch (firestoreError) {
+        console.warn("Firestore document creation failed:", firestoreError);
+        // Continue anyway - user can still sign in
+      }
 
       // Send verification email (uses Firebase's built-in template)
-      await sendEmailVerification(user);
+      try {
+        await sendEmailVerification(user);
+        console.log("Verification email sent");
+        setSuccess("Account created! Check your email for verification link.");
+      } catch (emailError) {
+        console.warn("Verification email failed:", emailError);
+        setSuccess("Account created! Click 'Resend' below if you don't receive the verification email.");
+      }
 
+      // Always show verification screen on success
       setMode("verify");
-      setSuccess("Account created! Check your email for verification link.");
 
     } catch (error) {
       console.error("Email sign-up error:", error);
@@ -413,7 +434,31 @@ const SignUpModal = () => {
       } else if (error.code === "auth/weak-password") {
         setError("Password is too weak.");
       } else {
-        setError("Registration failed. Please try again.");
+        setError("Registration failed: " + error.message);
+      }
+    }
+    setLoading(false);
+  };
+
+  // ===== RESEND VERIFICATION EMAIL =====
+  const handleResendVerification = async () => {
+    setLoading(true);
+    setError("");
+    
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        await sendEmailVerification(user);
+        setSuccess("Verification email sent! Check your inbox and spam folder.");
+      } else {
+        setError("Please sign in first to resend verification.");
+      }
+    } catch (error) {
+      console.error("Resend verification error:", error);
+      if (error.code === "auth/too-many-requests") {
+        setError("Too many requests. Please wait a few minutes.");
+      } else {
+        setError("Failed to send verification email. Please try again later.");
       }
     }
     setLoading(false);
@@ -503,19 +548,43 @@ const SignUpModal = () => {
         {/* Verification Sent Screen */}
         {mode === "verify" && (
           <div className="text-center py-4">
-            <div style={{ fontSize: '48px', marginBottom: '16px' }}>📧</div>
-            <h4>Check Your Email</h4>
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>✅</div>
+            <h4>Account Created!</h4>
+            
+            {success && (
+              <div className="alert alert-success mb-3" style={{ textAlign: 'left' }}>
+                {success}
+              </div>
+            )}
+            
             <p style={{ color: '#BDBDBD' }}>
               We've sent a verification link to <strong>{email}</strong>
             </p>
             <p style={{ fontSize: '14px', color: '#6F6F6F' }}>
               Click the link in the email to verify your account, then return here to sign in.
             </p>
+            <p style={{ fontSize: '13px', color: '#6F6F6F', marginTop: '16px' }}>
+              <strong>Didn't receive the email?</strong><br />
+              Check your spam folder, or click below to resend.
+            </p>
+            
+            {error && <div className="alert alert-danger mb-3">{error}</div>}
+            
             <button 
-              className="btn btn-secondary mt-3"
-              onClick={() => { setMode("signin"); setSuccess(""); }}
+              className="btn btn-primary mb-2"
+              onClick={handleResendVerification}
+              disabled={loading}
+              style={{ width: '100%' }}
             >
-              Back to Sign In
+              {loading ? "Sending..." : "RESEND VERIFICATION EMAIL"}
+            </button>
+            
+            <button 
+              className="btn btn-secondary"
+              onClick={() => { setMode("signin"); setSuccess(""); setError(""); }}
+              style={{ width: '100%' }}
+            >
+              ← Back to Sign In
             </button>
           </div>
         )}
