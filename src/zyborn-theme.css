@@ -392,7 +392,28 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .form-control::placeholder {
-  color: var(--color-white);
+  color: var(--color-white) !important;
+  opacity: 1 !important;
+}
+
+.form-control::-webkit-input-placeholder {
+  color: var(--color-white) !important;
+  opacity: 1 !important;
+}
+
+.form-control::-moz-placeholder {
+  color: var(--color-white) !important;
+  opacity: 1 !important;
+}
+
+.form-control:-ms-input-placeholder {
+  color: var(--color-white) !important;
+  opacity: 1 !important;
+}
+
+.form-control::-ms-input-placeholder {
+  color: var(--color-white) !important;
+  opacity: 1 !important;
 }
 
 .form-label {
