@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase/config";
 import { onAuthStateChanged } from "firebase/auth";
 import "./BidderVerification.css";
@@ -95,10 +95,11 @@ const BidderVerification = () => {
       });
 
       // Update user document to show verification submitted
-      await updateDoc(doc(db, "users", user.uid), {
+      // Using setDoc with merge to preserve existing fields like 'admin'
+      await setDoc(doc(db, "users", user.uid), {
         verificationSubmitted: true,
         verificationStatus: "pending"
-      });
+      }, { merge: true });
 
       setSubmitted(true);
       
