@@ -21,13 +21,7 @@ import { ModalTypes } from "../utils/modalTypes";
 // =============================================================================
 // BID INCREMENT CONFIGURATION
 // =============================================================================
-const BID_INCREMENTS = [
-  { label: '+$1,000', value: 1000 },
-  { label: '+$5,000', value: 5000 },
-  { label: '+$10,000', value: 10000 },
-  { label: '+$25,000', value: 25000 },
-  { label: '+$50,000', value: 50000 },
-];
+const BID_INCREMENT = { label: '+$50,000', value: 50000 };
 
 // =============================================================================
 // ICON COMPONENTS
@@ -245,18 +239,15 @@ const ItemModal = () => {
         )}
 
         <div className="mb-3">
-          <label className="form-label">SELECT BID INCREMENT</label>
+          <label className="form-label">BID INCREMENT</label>
           <div className="bid-buttons">
-            {BID_INCREMENTS.map((inc) => (
-              <button
-                key={inc.value}
-                className={`btn-bid-increment ${selectedIncrement?.value === inc.value ? 'selected' : ''}`}
-                onClick={() => handleSelectIncrement(inc)}
-                disabled={isSubmitting || !isApproved}
-              >
-                {inc.label}
-              </button>
-            ))}
+            <button
+              className={`btn-bid-increment single ${selectedIncrement ? 'selected' : ''}`}
+              onClick={() => handleSelectIncrement(BID_INCREMENT)}
+              disabled={isSubmitting || !isApproved}
+            >
+              {BID_INCREMENT.label}
+            </button>
           </div>
         </div>
 

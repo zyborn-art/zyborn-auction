@@ -206,6 +206,15 @@ h1, h2, h3, h4, h5, h6 {
   cursor: not-allowed;
 }
 
+/* Single bid increment button - full width and prominent */
+.btn-bid-increment.single {
+  flex: none;
+  width: 100%;
+  padding: 16px 24px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
 /* --------------------------------------------------------------------------
    5. NAVBAR
    -------------------------------------------------------------------------- */
