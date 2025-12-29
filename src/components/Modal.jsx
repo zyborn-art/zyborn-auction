@@ -784,16 +784,7 @@ const SignUpModal = () => {
                 VERIFICATION REQUIRED
               </h6>
               <p style={{ fontSize: '14px', color: '#BDBDBD', marginBottom: '0' }}>
-                After registration, complete the{' '}
-                <a 
-                  href="/bidder-verification" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  style={{ color: '#F6931B' }}
-                >
-                  bidder verification form
-                </a>{' '}
-                to enable bidding.
+                After registration, complete the bidder verification form to enable bidding.
               </p>
             </div>
           </>
