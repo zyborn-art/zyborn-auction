@@ -11,8 +11,6 @@ const Footer = () => {
         </div>
         <div className="d-flex align-items-center gap-3">
           <a href="https://zyborn.com" className="footer-link">zyborn.com</a>
-          <span className="text-muted">•</span>
-          <a href="https://zyborn.com/press" className="footer-link">Press</a>
         </div>
       </div>
     </footer>
