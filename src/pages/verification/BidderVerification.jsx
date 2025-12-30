@@ -66,6 +66,8 @@ These Terms apply to all areas. Where provisions relate only to auctions, this w
   - Late payment may incur interest charges and account suspension.
   - Deposits or pre-authorisation holds may be required for high-value Lots.
 
+The auction and the performance presenting the artworks constitute separate activities and are legally and geographically independent of one another.
+
 ## 7. Title & Risk
 
 - Title to purchased artwork passes to the Buyer/Client only upon receipt of full cleared funds.
