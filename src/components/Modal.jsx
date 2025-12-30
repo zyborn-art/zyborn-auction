@@ -88,6 +88,7 @@ const ItemModal = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState({ message: "", type: "" });
   const [currentBid, setCurrentBid] = useState(0);
+  const [bidCount, setBidCount] = useState(0);
   const [isApproved, setIsApproved] = useState(false);
   const [isCheckingApproval, setIsCheckingApproval] = useState(true);
 
@@ -101,6 +102,7 @@ const ItemModal = () => {
   useEffect(() => {
     const status = itemStatus(activeItem);
     setCurrentBid(status.amount);
+    setBidCount(status.bids);
   }, [activeItem]);
 
   useEffect(() => {
@@ -239,22 +241,32 @@ const ItemModal = () => {
         )}
 
         <div className="mb-3">
-          <label className="form-label">BID INCREMENT</label>
+          <label className="form-label">{bidCount === 0 ? 'OPENING BID' : 'BID INCREMENT'}</label>
           <div className="bid-buttons">
-            <button
-              className={`btn-bid-increment single ${selectedIncrement ? 'selected' : ''}`}
-              onClick={() => handleSelectIncrement(BID_INCREMENT)}
-              disabled={isSubmitting || !isApproved}
-            >
-              {BID_INCREMENT.label}
-            </button>
+            {bidCount === 0 ? (
+              <button
+                className={`btn-bid-increment single opening-bid ${selectedIncrement ? 'selected' : ''}`}
+                onClick={() => handleSelectIncrement({ label: 'Opening Bid', value: 0 })}
+                disabled={isSubmitting || !isApproved}
+              >
+                PLACE OPENING BID: {formatMoney(activeItem.currency, currentBid)}
+              </button>
+            ) : (
+              <button
+                className={`btn-bid-increment single ${selectedIncrement ? 'selected' : ''}`}
+                onClick={() => handleSelectIncrement(BID_INCREMENT)}
+                disabled={isSubmitting || !isApproved}
+              >
+                {BID_INCREMENT.label}
+              </button>
+            )}
           </div>
         </div>
 
         {selectedIncrement && (
           <div className="text-center mb-3">
             <span className="font-mono" style={{ color: '#BDBDBD' }}>
-              Your bid: {formatMoney(activeItem.currency, currentBid + selectedIncrement.value)}
+              Your bid: {formatMoney(activeItem.currency, bidCount === 0 ? currentBid : currentBid + selectedIncrement.value)}
             </span>
           </div>
         )}

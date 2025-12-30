@@ -215,6 +215,38 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
 }
 
+/* Opening bid button - extra prominent styling */
+.btn-bid-increment.opening-bid {
+  background-color: var(--color-orange) !important;
+  border-color: var(--color-orange) !important;
+  color: var(--color-black) !important;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 20px 24px;
+  animation: pulse-glow 2s infinite;
+}
+
+.btn-bid-increment.opening-bid:hover:not(:disabled) {
+  filter: brightness(1.1);
+  transform: scale(1.02);
+}
+
+.btn-bid-increment.opening-bid.selected {
+  background-color: var(--color-orange) !important;
+  border-color: var(--color-orange) !important;
+  color: var(--color-black) !important;
+  box-shadow: 0 0 20px rgba(246, 147, 27, 0.4);
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(246, 147, 27, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(246, 147, 27, 0.5);
+  }
+}
+
 /* --------------------------------------------------------------------------
    5. NAVBAR
    -------------------------------------------------------------------------- */
