@@ -361,6 +361,20 @@ const BidderVerification = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    
+    // Special validation for dateOfBirth
+    if (name === "dateOfBirth") {
+      // Validate date format and year
+      if (value) {
+        const year = parseInt(value.split("-")[0], 10);
+        // Check if year is valid (4 digits, between 1900-2024)
+        if (year < 1900 || year > 2024 || value.split("-")[0].length !== 4) {
+          setError("Please enter a valid date of birth (year must be 1900-2024)");
+          return;
+        }
+      }
+    }
+    
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -379,6 +393,22 @@ const BidderVerification = () => {
     // Validation
     if (!formData.fullName || !formData.dateOfBirth || !formData.nationality || !formData.phone) {
       setError("Please fill in all fields");
+      return;
+    }
+
+    // Validate date of birth - strict check
+    const dobParts = formData.dateOfBirth.split("-");
+    const dobYear = parseInt(dobParts[0], 10);
+    const dobDate = new Date(formData.dateOfBirth);
+    
+    if (
+      dobParts[0].length !== 4 ||
+      isNaN(dobYear) ||
+      dobYear < 1900 ||
+      dobYear > 2024 ||
+      isNaN(dobDate.getTime())
+    ) {
+      setError("Please enter a valid date of birth (year must be 1900-2024, 4 digits only)");
       return;
     }
 
@@ -657,6 +687,8 @@ const BidderVerification = () => {
                 name="dateOfBirth"
                 value={formData.dateOfBirth}
                 onChange={handleChange}
+                min="1900-01-01"
+                max="2024-12-31"
                 required
               />
             </div>
